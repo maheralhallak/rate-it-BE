@@ -1,12 +1,28 @@
 var express = require('express');
+var app = express();
+//express is ready...!!!
+
+const connectDb = require('./config/db')
+
+require('dotenv').config()
+//.env file connected 
+connectDb()
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+//var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+//CORS SETUP-----------------------
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Headers', "*");
+    res.header('Access-Control-Allow-Methods', "GET, PUT, POST, DELETE");
+    next();
+}
+app.use(allowCrossDomain);
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -14,8 +30,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, console.log(`Rate-it app started Working on port ${PORT}`)
+);
+
+app.get('/', function (req,res) {
+  res.cookie('my first cookie', 'looks great!!');
+  res.end('that was nice the end ')
+})
+app.get('/remove', function (req,res) {
+  res.clearCookie('my first cookie');
+    
+})
+
+
+
 
 
 /* await ( await fetch(
@@ -47,4 +80,6 @@ app.use('/users', usersRouter);
       }
     }
   ) ).json()  */
+
+  
 module.exports = app;
