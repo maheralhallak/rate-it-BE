@@ -14,6 +14,7 @@ var logger = require('morgan');
 //var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var commentRouter = require('./routes/comment')
 //CORS SETUP-----------------------
 let allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -32,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/comment', commentRouter)
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, console.log(`Rate-it app started Working on port ${PORT}`)
