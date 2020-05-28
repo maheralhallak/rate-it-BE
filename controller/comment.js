@@ -70,3 +70,13 @@ console.log('1')
 }
 
 // delete .....if (comment.authorId === req.userId;)
+module.exports.deleteComment =  (req, res) => {
+   Comment.findOne({authorId:req.params.userId},()=> {
+    if (comment.authorId === req.userId) {
+            Comment.deleteOne({brandId:req.params.brandId}) 
+            res.json({status:'success', message:" Comment Deleted"});
+        } else if(err){throw err}
+   })
+    
+} 
+
