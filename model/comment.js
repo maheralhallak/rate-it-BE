@@ -20,6 +20,9 @@ const commentSchema = new mongoose.Schema({
    },
    authorId:{
        type:String
+   },
+   rating:{
+       type:Number
    }
 })
 module.exports = mongoose.model('comments', commentSchema);

@@ -46,8 +46,13 @@ console.log('1')
                   Comment.find({referanceId:req.userId}).then((data, err)=>{
                       if (err) {
                           res.json({status:'failed', message: err});
-                      } else {
-                          res.json({status:'success', message: data}); 
+                      } else  {
+                        Comment.find({brandId:comment.brandId}).then((finalResult,err) => {
+                            if ( finalResult ) { 
+                                 res.json({status:'success', message:finalResult});
+                            }else{
+                                res.json({status:'fail', message:"Comment is added as well but you should refresh your page"}) }
+                        });
                       }
                   });
               }
@@ -70,13 +75,15 @@ console.log('1')
 }
 
 // delete .....if (comment.authorId === req.userId;)
-module.exports.deleteComment =  (req, res) => {
-   Comment.findOne({authorId:req.params.userId},()=> {
-    if (comment.authorId === req.userId) {
-            Comment.deleteOne({brandId:req.params.brandId}) 
-            res.json({status:'success', message:" Comment Deleted"});
-        } else if(err){throw err}
-   })
-    
+module.exports.deleteComment =  async (req, res) => {
+   const result = await Comment.findOneAndDelete({_id:req.params.id,authorId:req.userId});
+   //console.log('aa',result,req.params.id)
+   if ( result ) {
+       const finalResult = await Comment.find({brandId:result.brandId});
+       if ( finalResult ) { 
+            res.json({status:'success', message:finalResult});
+       }else          res.json({status:'fail', message:"Record is deleted but you should refresh your page"});
+    }else          res.json({status:'fail', message:" Comment not Deleted"});
+         
 } 
 
