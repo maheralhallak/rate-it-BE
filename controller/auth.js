@@ -83,14 +83,14 @@ exports.BrandRegister = async (req,res) => {
 }})}
 
 
-exports.postLogin = (req,res) =>{
+exports.postLogin = async (req,res) =>{
 let {email, pass } = req.body;
-console.log(email);
+console.log(req.body);
 /* pass = bcrypt.hash(pass,10) */
 
-User.findOne({email} , (err,result) =>{
+await User.findOne({email} , (err,result) =>{
     
-    console.log(email, pass , result.pass);
+    console.log(result);
     if (err) {
         res.json({status: "failed" ,  message: err})
     }else if (!result) {
@@ -103,7 +103,8 @@ User.findOne({email} , (err,result) =>{
                 res.json({
                     status : "success",
                     message : "you logged in !!",
-                    token
+                    token,
+                    fullName: result.fName + " " +  result.lName
                 });
             } else res.json({status: "failed", message: "email or password are wrong!"});
         });

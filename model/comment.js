@@ -23,6 +23,9 @@ const commentSchema = new mongoose.Schema({
    },
    rating:{
        type:Number
+   },
+   userName:{
+       type:String
    }
 })
 module.exports = mongoose.model('comments', commentSchema);

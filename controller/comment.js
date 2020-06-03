@@ -35,7 +35,9 @@ console.log('1')
           comment.content = req.body.content;
           comment.picture = req.file ? req.file.path.replace('public/images','') : null
           comment.authorId = req.userId; 
-       
+          comment.rating = req.body.rating;
+          comment.userName = req.body.userName;
+          console.log(req.body);
           
             comment.save().then((result,err) => {
               if (err) {
